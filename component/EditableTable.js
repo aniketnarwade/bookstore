@@ -24,7 +24,6 @@ import axios from "axios";
 
 const EditableTable = ({ homeUser }) => {
   const initialData = [];
-
   const [data, setData] = useState(initialData);
   const toast = useToast();
 
