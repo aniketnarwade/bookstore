@@ -49,7 +49,7 @@ export async function GET(req, res) {
 
 export async function DELETE(req, res) {
     try {
-        const url = new URL(req.url, "http://localhost"); // Assuming the req.url contains the full URL including the query string
+        const url = new URL(req.url, "https://bookstore-nu-ten.vercel.app"); // Assuming the req.url contains the full URL including the query string
     const searchParams = new URLSearchParams(url.search);
     const id = searchParams.get('id');
     

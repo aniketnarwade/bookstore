@@ -81,7 +81,7 @@ const EditableTable = ({ homeUser }) => {
   };
 
   const handleDelete = (bookId) => {
-    const url = `http://localhost:3000/api/books?id=${encodeURIComponent(
+    const url = `https://bookstore-nu-ten.vercel.app/api/books?id=${encodeURIComponent(
       bookId
     )}`;
 
@@ -130,7 +130,7 @@ const EditableTable = ({ homeUser }) => {
   }, [homeUser]);
 
   const GetDataById = (userId) => {
-    const url = `http://localhost:3000/api/books?id=${encodeURIComponent(
+    const url = `https://bookstore-nu-ten.vercel.app/api/books?id=${encodeURIComponent(
       userId
     )}`;
     axios

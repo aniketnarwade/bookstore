@@ -100,7 +100,7 @@ const UserTable = ({ setHomeUser }) => {
 
   const deleteUser = async (userId) => {
     try {
-      const url = `http://localhost:3000/api/user?id=${encodeURIComponent(
+      const url = `https://bookstore-nu-ten.vercel.app/api/user?id=${encodeURIComponent(
         userId
       )}`;
       const response = await axios.delete(url);
