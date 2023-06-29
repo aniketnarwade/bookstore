@@ -40,6 +40,21 @@ const EditableTable = ({ homeUser }) => {
   };
 
   const handleSave = async (data) => {
+    const { title, author, genre, year, isbn } = data;
+
+    if (!title || !author || !genre || !year || !isbn) {
+      let titleerr =!title ? "Book Title , " : ""
+      let authorerr =!author ? "Author , " : ""
+      let genreerr =!genre ? "Genre , " : ""
+      let yearerr =!year ? "year , " : ""
+      let isbnerr =!isbn ? "Isbn  " : ""
+      toast({
+        title: `Please add ${titleerr} ${authorerr} ${genreerr} ${yearerr} ${isbnerr} `,
+        status: "error",
+        isClosable: true,
+      });
+      return; // Stop the submission
+    }
     data.userId = homeUser?._id;
     const response = await fetch("/api/books", {
       method: "POST",
