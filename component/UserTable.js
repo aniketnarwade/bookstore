@@ -23,6 +23,8 @@ const UserTable = ({ setHomeUser }) => {
   const toast = useToast();
   const [userData, setUserData] = useState(null);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   useEffect(() => {
     fetchData();
   }, []);
@@ -55,17 +57,32 @@ const UserTable = ({ setHomeUser }) => {
     e.preventDefault();
 
     try {
+      const { name, email, phone } = formData;
+      if (!name || !email || !phone) {
+        let nameerr = !name ? "Name , " : "";
+        let emailerr = !email ? "Email , " : "";
+        let phoneerr = !phone ? "Phone Number , " : "";
+        toast({
+          title: `Please add ${nameerr} ${emailerr} ${phoneerr} `,
+          status: "error",
+          isClosable: true,
+        });
+        return; // Stop the submission
+      }
+      setSubmitting(true);
       const response = await fetch("/api/user", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
+          name: name,
+          email: email,
+          phone: phone,
         }),
       });
 
       if (response.status === 200) {
+        setSubmitting(false);
+        setSubmitted(true);
         setFormData({
           name: "",
           email: "",
@@ -123,57 +140,95 @@ const UserTable = ({ setHomeUser }) => {
   };
 
   return (
-    <Container maxW="100%">
-      <form onSubmit={formSubmit}>
-        <Grid templateColumns={["1fr", "1fr", "repeat(3, 1fr)"]} gap={6}>
-          <GridItem>
-            <Input
-              name="name"
-              value={formData.name}
-              onChange={handleChangeForm}
-              placeholder="name"
-              backgroundColor="white"
-              required
-              type="text"
-            />
-          </GridItem>
-          <GridItem>
-            <Input
-              name="phone"
-              value={formData.phone}
-              onChange={handleChangeForm}
-              placeholder="phone"
-              backgroundColor="white"
-              required
-              type="number"
-            />
-          </GridItem>
-          <GridItem>
-            <Input
-              name="email"
-              value={formData.email}
-              onChange={handleChangeForm}
-              placeholder="email"
-              backgroundColor="white"
-              required
-              type="email"
-            />
-          </GridItem>
-          <GridItem>
-            <Button colorScheme="teal" variant="outline" type="submit">
-              Submit
-            </Button>
-          </GridItem>
-        </Grid>
-      </form>
+    <>
+      <div className="flex justify-center items-center h-screen main mt-4">
+        <form
+          className="w-full max-w-md bg-white p-8 rounded shadow-lg"
+          onSubmit={formSubmit}
+        >
+          <h2 className="text-2xl font-bold mb-6">User Form</h2>
+          {submitted ? (
+            <>
+              <p className="text-green-500 mb-6">
+                User submitted successfully!
+              </p>
+              <p className=" mb-6">
+                Submit another User?
+                <button
+                  onClick={() => {
+                    setSubmitted(false);
+                  }}
+                  className=" btn-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+                >
+                  Click here{" "}
+                </button>{" "}
+              </p>
+            </>
+          ) : (
+            <>
+              <div className="mb-6">
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  placeholder="Name"
+                  value={formData.name}
+                  onChange={handleChangeForm}
+                  className="inputBox border border-gray-300 rounded px-4 py-2 focus:outline-none focus:border-blue-500"
+                />
+              </div>
+              <div className="mb-6">
+                <input
+                  type="tel"
+                  id="phone"
+                  placeholder="Phone Number"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChangeForm}
+                  className="inputBox border border-gray-300 rounded px-4 py-2 focus:outline-none focus:border-blue-500"
+                />
+              </div>
+              <div className="mb-6">
+                <input
+                  type="email"
+                  id="email"
+                  placeholder="Email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChangeForm}
+                  className="inputBox border border-gray-300 rounded px-4 py-2 focus:outline-none focus:border-blue-500"
+                />
+              </div>
+              <button
+                type="submit"
+                className=" btn bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+                disabled={submitting}
+              >
+                {submitting ? "Submitting..." : "Submit"}
+              </button>
+            </>
+          )}
+        </form>
+      </div>
+
       <Box overflowX="auto">
-        <Table variant="striped">
+        <h1
+          className="bg-red-400"
+          style={{ textAlign: "center", color: "white", margin: "20px 0px" }}
+        >
+          User Table
+        </h1>
+        <Table
+          style={{ tableLayout: "fixed" }}
+          width={"100%"}
+          variant="striped"
+        >
           <Thead>
             <Tr>
-              <Th>Name</Th>
-              <Th>Email</Th>
-              <Th>Phone</Th>
-              <Th>Action</Th>
+              <Th width={"30%"}>Name</Th>
+              <Th width={"45%"}>Email</Th>
+              <Th width={"25%"}>Phone</Th>
+              <Th width={"20%"}>Action</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -186,11 +241,10 @@ const UserTable = ({ setHomeUser }) => {
                   <Checkbox
                     isChecked={user._id === selectedUser?._id}
                     onChange={() => handleCheck(user)}
-                    size="lg"
+                    size={{ base: "md", md: "lg" }}
                     colorScheme="telegram"
-                  >
-                    {user.name}
-                  </Checkbox>
+                  ></Checkbox>
+                  <p>{user.name}</p>
                 </Td>
                 <Td>{user.email}</Td>
                 <Td>{user.phone}</Td>
@@ -206,7 +260,7 @@ const UserTable = ({ setHomeUser }) => {
           </Tbody>
         </Table>
       </Box>
-    </Container>
+    </>
   );
 };
 

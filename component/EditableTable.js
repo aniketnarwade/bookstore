@@ -12,6 +12,7 @@ import {
   GridItem,
   TableCaption,
   useToast,
+  Box,
 } from "@chakra-ui/react";
 import {
   EditIcon,
@@ -43,11 +44,11 @@ const EditableTable = ({ homeUser }) => {
     const { title, author, genre, year, isbn } = data;
 
     if (!title || !author || !genre || !year || !isbn) {
-      let titleerr =!title ? "Book Title , " : ""
-      let authorerr =!author ? "Author , " : ""
-      let genreerr =!genre ? "Genre , " : ""
-      let yearerr =!year ? "year , " : ""
-      let isbnerr =!isbn ? "Isbn  " : ""
+      let titleerr = !title ? "Book Title , " : "";
+      let authorerr = !author ? "Author , " : "";
+      let genreerr = !genre ? "Genre , " : "";
+      let yearerr = !year ? "year , " : "";
+      let isbnerr = !isbn ? "Isbn  " : "";
       toast({
         title: `Please add ${titleerr} ${authorerr} ${genreerr} ${yearerr} ${isbnerr} `,
         status: "error",
@@ -191,6 +192,12 @@ const EditableTable = ({ homeUser }) => {
 
   return (
     <>
+      <h1
+        className="bg-red-400"
+        style={{ textAlign: "center", color: "white", margin: "20px 0px" }}
+      >
+        Selected User
+      </h1>
       <Grid templateColumns="repeat(3, 1fr)" gap={6} mt={5}>
         <GridItem w="100%" h="10" bg="blue.500">
           <Input
@@ -226,9 +233,15 @@ const EditableTable = ({ homeUser }) => {
           />
         </GridItem>
       </Grid>
+      <h1
+        className="bg-red-400"
+        style={{ textAlign: "center", color: "white", margin: "10px 0px" }}
+      >
+        Book Table
+      </h1>
       <IconButton
         variant="outline"
-        mt={5}
+        mt={2}
         colorScheme="teal"
         isDisabled={homeUser ? false : true}
         aria-label="Add"
@@ -236,117 +249,114 @@ const EditableTable = ({ homeUser }) => {
         onClick={handleAddRow}
       />
 
-      <Table variant="striped" mt={5}>
-        <Thead>
-          <Tr>
-            <Th>S. No</Th>
-            <Th>Book Title</Th>
-            <Th>Author</Th>
-            <Th>Genre</Th>
-            <Th>Year of Publication</Th>
-            <Th>ISBN</Th>
-            <Th>Action</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {data?.map((row, index) => (
-            <Tr key={row.id} ref={index === 0 ? firstRowRef : null}>
-              <Td>{row.id}</Td>
-              <Td>
-                {editMode[row.id] ? (
-                  <Input
-                    outline="2px solid teal"
-                    value={row.title}
-                    onChange={(event) => handleChange(event, row.id, "title")}
-                  />
-                ) : (
-                  row.title
-                )}
-              </Td>
-              <Td>
-                {editMode[row.id] ? (
-                  <Input
-                    outline="2px solid teal"
-                    value={row.author}
-                    onChange={(event) => handleChange(event, row.id, "author")}
-                  />
-                ) : (
-                  row.author
-                )}
-              </Td>
-              <Td>
-                {editMode[row.id] ? (
-                  <Input
-                    outline="2px solid teal"
-                    value={row.genre}
-                    onChange={(event) => handleChange(event, row.id, "genre")}
-                  />
-                ) : (
-                  row.genre
-                )}
-              </Td>
-              <Td>
-                {editMode[row.id] ? (
-                  <Input
-                    outline="2px solid teal"
-                    value={row.year}
-                    onChange={(event) => handleChange(event, row.id, "year")}
-                  />
-                ) : (
-                  row.year
-                )}
-              </Td>
-              <Td>
-                {editMode[row.id] ? (
-                  <Input
-                    outline="2px solid teal"
-                    value={row.isbn}
-                    onChange={(event) => handleChange(event, row.id, "isbn")}
-                  />
-                ) : (
-                  row.isbn
-                )}
-              </Td>
-              <Td>
-                {editMode[row.id] ? (
-                  <>
-                    <IconButton
-                      aria-label="Save"
-                      icon={<CheckIcon />}
-                      onClick={() => handleSave(row)}
-                    />
-                    <IconButton
-                      aria-label="Cancel"
-                      icon={<CloseIcon />}
-                      onClick={() => handleCancel(row.id)}
-                    />
-                  </>
-                ) : (
-                  <>
-                    <IconButton
-                      aria-label="Edit"
-                      icon={<EditIcon />}
-                      onClick={() => handleEdit(row.id)}
-                    />
-                    <IconButton
-                      aria-label="Delete"
-                      icon={<DeleteIcon />}
-                      onClick={() => handleDelete(row._id)}
-                    />
-                  </>
-                )}
-              </Td>
+      <Box overflowX="auto" className="bookTable">
+        <Table variant="striped" mt={5}>
+          <Thead>
+            <Tr>
+              <Th>S. No</Th>
+              <Th>Book Title</Th>
+              <Th>Author</Th>
+              <Th>Genre</Th>
+              <Th>Year of Publication</Th>
+              <Th>ISBN</Th>
+              <Th>Action</Th>
             </Tr>
-          ))}
-        </Tbody>
-        {/* <tfoot>
-        <Tr>
-          <Td colSpan={7} textAlign="center">
-            No Data
-          </Td>
-        </Tr>
-      </tfoot> */}
-      </Table>
+          </Thead>
+          <Tbody>
+            {data?.map((row, index) => (
+              <Tr key={row.id} ref={index === 0 ? firstRowRef : null}>
+                <Td>{row.id}</Td>
+                <Td>
+                  {editMode[row.id] ? (
+                    <Input
+                      outline="2px solid teal"
+                      value={row.title}
+                      onChange={(event) => handleChange(event, row.id, "title")}
+                    />
+                  ) : (
+                    row.title
+                  )}
+                </Td>
+                <Td>
+                  {editMode[row.id] ? (
+                    <Input
+                      outline="2px solid teal"
+                      value={row.author}
+                      onChange={(event) =>
+                        handleChange(event, row.id, "author")
+                      }
+                    />
+                  ) : (
+                    row.author
+                  )}
+                </Td>
+                <Td>
+                  {editMode[row.id] ? (
+                    <Input
+                      outline="2px solid teal"
+                      value={row.genre}
+                      onChange={(event) => handleChange(event, row.id, "genre")}
+                    />
+                  ) : (
+                    row.genre
+                  )}
+                </Td>
+                <Td>
+                  {editMode[row.id] ? (
+                    <Input
+                      outline="2px solid teal"
+                      value={row.year}
+                      onChange={(event) => handleChange(event, row.id, "year")}
+                    />
+                  ) : (
+                    row.year
+                  )}
+                </Td>
+                <Td>
+                  {editMode[row.id] ? (
+                    <Input
+                      outline="2px solid teal"
+                      value={row.isbn}
+                      onChange={(event) => handleChange(event, row.id, "isbn")}
+                    />
+                  ) : (
+                    row.isbn
+                  )}
+                </Td>
+                <Td>
+                  {editMode[row.id] ? (
+                    <>
+                      <IconButton
+                        aria-label="Save"
+                        icon={<CheckIcon />}
+                        onClick={() => handleSave(row)}
+                      />
+                      <IconButton
+                        aria-label="Cancel"
+                        icon={<CloseIcon />}
+                        onClick={() => handleCancel(row.id)}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <IconButton
+                        aria-label="Edit"
+                        icon={<EditIcon />}
+                        onClick={() => handleEdit(row.id)}
+                      />
+                      <IconButton
+                        aria-label="Delete"
+                        icon={<DeleteIcon />}
+                        onClick={() => handleDelete(row._id)}
+                      />
+                    </>
+                  )}
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </Box>
     </>
   );
 };

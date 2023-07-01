@@ -2,4 +2,40 @@
 @tailwind components;
 @tailwind utilities;
 
-
+.inputBox {
+  width: 80%;
+  margin: 10px;
+  outline: none;
+  border: none;
+  background: transparent;
+  border-bottom: 1px solid yellow;
+}
+.inputBox::placeholder {
+  color: white;
+  opacity: 1; /* Firefox */
+}
+.main {
+  background-color: rgba(0, 128, 128, 0.8);
+  color: #fff;
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  margin-top: 10px;
+}
+.btn {
+  background-color: lightgreen;
+  padding: 2px;
+  width: 20%;
+  margin: 20px;
+}
+.btn-2 {
+  background-color: lightcoral;
+  padding: 2px;
+  width: 10%;
+  margin: 5px;
+}
+.bookTable {
+  margin-bottom: 50px;
+}
